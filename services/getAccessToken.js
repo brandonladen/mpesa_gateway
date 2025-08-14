@@ -1,5 +1,4 @@
  const axios = require('axios');
-const { get } = require('https');
 const path = require('path');
 
 
@@ -30,5 +29,5 @@ const getAccessToken = async() => {
     throw new Error('Failed to get access token.');
   }
 };
-getAccessToken()
-//  module.exports = getAccessToken;
+
+ module.exports = getAccessToken;
