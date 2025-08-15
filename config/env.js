@@ -8,13 +8,7 @@ dotenv.config({
 
 // Validate required environment variables
 const requiredVars = [
-  'NODE_ENV',
-  'MONGO_URI',
-  'MPESA_CONSUMER_KEY',
-  'MPESA_CONSUMER_SECRET',
-  'MPESA_SHORTCODE',
-  'MPESA_PASSKEY',
-  'MPESA_CALLBACK_URL'
+  'NODE_ENV'
 ];
 
 const missingVars = requiredVars.filter(varName => !process.env[varName]);
@@ -36,10 +30,14 @@ if (!process.env.PORT) {
 module.exports = {
   NODE_ENV: process.env.NODE_ENV,
   PORT: process.env.PORT,
-  MONGO_URI: process.env.MONGO_URI || 'mongodb://localhost:27017/mpesa_gateway',
+  
+  // MPESA Configuration
+  MPESA_BASE_URL: process.env.MPESA_BASE_URL,
   MPESA_CONSUMER_KEY: process.env.MPESA_CONSUMER_KEY,
   MPESA_CONSUMER_SECRET: process.env.MPESA_CONSUMER_SECRET,
   MPESA_SHORTCODE: process.env.MPESA_SHORTCODE,
   MPESA_PASSKEY: process.env.MPESA_PASSKEY,
-  MPESA_CALLBACK_URL: process.env.MPESA_CALLBACK_URL || 'https://your-domain.com/api/payments/callback'
+  CALLBACK_URL: process.env.CALLBACK_URL,
+  
+  // Add other environment variables here as needed
 };

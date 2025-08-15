@@ -1,6 +1,7 @@
 // Combine all routes here
-const express = require('express');
+const express = require("express");
 const healthController = require('../controllers/health.controller');
+const paymentRoutes = require('./payment.routes');
 
 const router = express.Router();
 
@@ -8,6 +9,6 @@ const router = express.Router();
 router.get('/health', healthController.healthCheck);
 
 // Payment routes
-router.use('/payments', require('./payment.routes'));
+router.use('/payments', paymentRoutes);
 
 module.exports = router;

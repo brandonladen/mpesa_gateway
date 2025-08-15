@@ -1,42 +1,39 @@
-const axios = require('axios');
-const logger = require('../utils/logger');
+// OAuth token logic
+const axios = require("axios");
+const path = require("path");
+const logger = require("../utils/logger");
 
-let accessToken = null;
-let tokenExpiry = null;
+require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
+require("dotenv").config();
 
-/**
- * Get M-Pesa API access token
- * @returns {Promise<string>} Access token
- */
-exports.getAccessToken = async () => {
-    try {
-        // Check if we have a valid token
-        if (accessToken && tokenExpiry && tokenExpiry > Date.now()) {
-            return accessToken;
-        }
+const generateAccessToken = async () => {
+  const consumerKey = process.env.MPESA_CONSUMER_KEY;
+  const consumerSecret = process.env.MPESA_CONSUMER_SECRET;
 
-        const consumerKey = process.env.MPESA_CONSUMER_KEY;
-        const consumerSecret = process.env.MPESA_CONSUMER_SECRET;
+  const url =
+    "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
 
-        // Generate auth string
-        const auth = Buffer.from(`${consumerKey}:${consumerSecret}`).toString('base64');
+  try {
+    const encodedCredentials = Buffer.from(
+      `${consumerKey}:${consumerSecret}`
+    ).toString("base64");
 
-        const response = await axios.get(
-            'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials',
-            {
-                headers: {
-                    Authorization: `Basic ${auth}`
-                }
-            }
-        );
+    const headers = {
+      Authorization: `Basic ${encodedCredentials}`,
+      "Content-Type": "application/json",
+    };
 
-        accessToken = response.data.access_token;
-        // Token expires in 1 hour, we'll refresh after 55 minutes
-        tokenExpiry = Date.now() + (55 * 60 * 1000);
-
-        return accessToken;
-    } catch (error) {
-        logger.error('Failed to get access token:', error.response?.data || error.message);
-        throw new Error('Failed to get access token');
-    }
+    const response = await axios.get(url, { headers });
+    const token = response.data.access_token;
+    return token;
+  } catch (error) {
+    logger.error("Error fetching M-Pesa access token", {
+      status: error.response?.status,
+      data: error.response?.data,
+      message: error.message
+    });
+    throw new Error("Failed to get access token.");
+  }
 };
+
+module.exports = { generateAccessToken };

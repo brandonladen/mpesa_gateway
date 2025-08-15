@@ -20,15 +20,12 @@ app.use(cors({
 
 // Request logging middleware
 app.use((req, res, next) => {
-  logger.info(`${req.method} ${req.path}`, {
-    ip: req.ip,
-    userAgent: req.get('User-Agent')
-  });
   next();
 });
 
 // Routes
 app.use('/api', routes);
+
 
 // Handle 404 errors
 app.use(notFound);
