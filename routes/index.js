@@ -4,6 +4,10 @@ const healthController = require('../controllers/health.controller');
 
 const router = express.Router();
 
-// routes zitakua hapa
+// Health check route
+router.get('/health', healthController.healthCheck);
+
+// Payment routes
+router.use('/payments', require('./payment.routes'));
 
 module.exports = router;
