@@ -1,3 +1,4 @@
+// M-PESA API URLs & credentials
 const envUtils = require('../common/envUtils');
 
 envUtils.loadEnv();
