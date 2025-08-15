@@ -1,26 +1,20 @@
  const axios = require('axios');
-const path = require('path');
+const getAccessToken =async ()=> {
+  const {
+      CONSUMER_KEY,
+      CONSUMER_SECRET,
+      MPESA_BASE_URL
+  } = require('../config/mpesa');
 
-
-require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
-require('dotenv').config();
-
-const getAccessToken = async() => {
-
-    const consumerKey =process.env.MPESA_CONSUMER_KEY
-    const consumerSecret =process.env.MPESA_CONSUMER_SECRET
-  // Choose one depending on your development environment
-    const url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
-  // const url = "https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"; // live
+    const url = `${MPESA_BASE_URL}/oauth/v1/generate?grant_type=client_credentials`;
 
   try {
-    const encodedCredentials = Buffer.from(`${consumerKey}:${consumerSecret}`).toString('base64');
+    const encodedCredentials = Buffer.from(`${CONSUMER_KEY}:${CONSUMER_SECRET}`).toString('base64');
 
     const headers = {
       'Authorization': `Basic ${encodedCredentials}`,
       'Content-Type': 'application/json'
     };
-    
     const response = await axios.get(url, { headers });
     return response.data.access_token;
 
@@ -29,5 +23,4 @@ const getAccessToken = async() => {
     throw new Error('Failed to get access token.');
   }
 };
-
- module.exports = getAccessToken;
+module.exports = getAccessToken;
