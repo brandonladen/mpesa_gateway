@@ -5,7 +5,7 @@ const {
   SHORTCODE,
   PASSKEY,
   CALLBACK_URL
-} = require('../config/mpesa');
+} = require('../config/env.js');
 
 async function initiatePayment(amount, phoneNumber, accountReference, transactionDesc) {
   const accessToken = await generateAccessToken();
