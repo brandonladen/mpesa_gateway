@@ -34,14 +34,15 @@ describe('STK Push Payment Service', () => {
     expect(axios.post).toHaveBeenCalledWith(
       expect.stringContaining('/mpesa/stkpush/v1/processrequest'),
       expect.objectContaining({
-        Amount: 100,
+        Amount: '100',
         PhoneNumber: '254712345678',
         AccountReference: 'TestAccount',
         TransactionDesc: 'Payment for testing'
       }),
       expect.objectContaining({
         headers: {
-          Authorization: `Bearer ${mockAccessToken}`
+          Authorization: `Bearer ${mockAccessToken}`,
+          'Content-Type': 'application/json'
         }
       })
     );
