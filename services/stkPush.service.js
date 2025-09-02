@@ -37,7 +37,7 @@ async function initiatePayment(
     Amount: amount,
     PartyA: formattedPhone,
     PartyB: MPESA_SHORTCODE,
-    PhoneNumber: phoneNumber,
+    PhoneNumber: formattedPhone,
     CallBackURL: CALLBACK_URL,
     AccountReference: accountReference,
     TransactionDesc: transactionDesc,
