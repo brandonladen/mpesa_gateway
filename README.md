@@ -8,6 +8,7 @@ A robust Node.js REST API for integrating M-Pesa mobile money payments into appl
 - **OAuth Authentication**: Secure token-based authentication with M-Pesa API
 - **Callback Handling**: Process payment confirmations and updates
 - **Transaction Management**: Track and store payment transactions
+- **API Documentation**: Interactive Swagger/OpenAPI documentation
 - **Comprehensive Logging**: Detailed logging for debugging and monitoring
 - **Error Handling**: Robust error handling with standardized responses
 - **CORS Support**: Cross-origin resource sharing enabled
@@ -23,7 +24,8 @@ mpesa_gateway/
 ├── server.js             # Server entry point and configuration
 ├── package.json          # Dependencies and scripts
 ├── config/
-│   └── env.js           # Environment configuration and validation
+│   ├── env.js           # Environment configuration and validation
+│   └── swagger.js       # Swagger/OpenAPI documentation configuration
 ├── controllers/
 │   └── health.controller.js  # Health check endpoint
 ├── middlewares/
@@ -101,12 +103,47 @@ npm start
 npm run dev:watch
 ```
 
+## API Documentation
+
+This API includes comprehensive Swagger/OpenAPI documentation for easy testing and integration.
+
+### Accessing API Documentation
+
+Once the server is running, you can access the interactive API documentation at:
+
+```
+http://localhost:3000/api-docs
+```
+
+The Swagger UI provides:
+- **Interactive Testing**: Test API endpoints directly from the browser
+- **Request/Response Examples**: See example payloads and responses
+- **Schema Definitions**: Detailed data models and validation rules
+- **Authentication Details**: Information about required headers and tokens
+
+### API Documentation Features
+
+- **Complete Endpoint Coverage**: All routes documented with examples
+- **Request Validation**: Schema-based request validation examples
+- **Response Models**: Detailed response structure documentation
+- **Error Handling**: Documentation of all possible error responses
+- **Try it Out**: Interactive testing of all endpoints
+
+## Running the Application
+```
+
 ### Running Tests
 ```bash
 npm test
 ```
 
 ## API Endpoints
+
+### API Documentation
+```
+GET /api-docs
+```
+Interactive Swagger UI for testing and exploring all API endpoints.
 
 ### Health Check
 ```
@@ -149,6 +186,33 @@ POST /api/payments/stkpush
 POST /api/payments/callback
 ```
 Receives payment confirmation from M-Pesa. This endpoint processes the callback data and updates transaction status.
+
+## Testing the API
+
+### Using Swagger UI
+1. Start the server: `npm run dev`
+2. Open browser and navigate to: `http://localhost:3000/api-docs`
+3. Use the interactive interface to test endpoints
+4. Click "Try it out" on any endpoint to test with sample data
+
+### Using cURL
+```bash
+# Test STK Push payment
+curl -X POST http://localhost:3000/api/payments/stkpush \
+  -H "Content-Type: application/json" \
+  -d '{
+    "amount": 10,
+    "phoneNumber": "0702499923",
+    "accountReference": "Test Payment",
+    "transactionDesc": "Payment for test transaction"
+  }'
+```
+
+### Using Postman
+Import the API collection by:
+1. Generate collection from Swagger: `http://localhost:3000/api-docs`
+2. Use Postman's "Import from Link" feature
+3. Enter the OpenAPI spec URL: `http://localhost:3000/api-docs.json`
 
 ## Configuration
 
@@ -208,7 +272,25 @@ npm test
 
 ## Usage Examples
 
-### Initiating a Payment
+### Using the Swagger UI (Recommended)
+
+1. Start the server: `npm run dev`
+2. Open `http://localhost:3000/api-docs` in your browser
+3. Navigate to the "Payments" section
+4. Click on "POST /payments/stkpush"
+5. Click "Try it out"
+6. Modify the example JSON with your test data:
+   ```json
+   {
+     "amount": 10,
+     "phoneNumber": "0702499923",
+     "accountReference": "Test Payment",
+     "transactionDesc": "Payment for test transaction"
+   }
+   ```
+7. Click "Execute" to send the request
+
+### Programmatic Usage
 
 ```javascript
 const axios = require('axios');

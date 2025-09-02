@@ -3,6 +3,7 @@ const cors = require('cors');
 const logger = require('./utils/logger');
 const { errorHandler, notFound } = require('./middlewares/errorHandler');
 const routes = require('./routes');
+const { specs, swaggerUi } = require('./config/swagger');
 
 const app = express();
 
@@ -22,6 +23,9 @@ app.use(cors({
 app.use((req, res, next) => {
   next();
 });
+
+// Swagger Documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 // Routes
 app.use('/api', routes);
